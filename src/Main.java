@@ -12,16 +12,33 @@ public class Main {
         byte years;
 
         Scanner scanner = new Scanner(System.in);
-
-        System.out.println("Principal: ");
-        principal = scanner.nextFloat();
+        System.out.println("Principal ($1K - $1M): ");
+        while (true){
+            principal = scanner.nextFloat();
+            if (principal > 1_000 && principal < 1_000_000){
+                break;
+            } else
+                System.out.println("Enter a number between 1,000 and 1,000,000.");
+        }
 
         System.out.println("Annual InterestRate: ");
-        annualInterestRate = scanner.nextFloat();
+        while (true){
+            annualInterestRate = scanner.nextFloat();
+            if (annualInterestRate > 0 && annualInterestRate <= 30){
+                break;
+            } else
+                System.out.println("Enter a value greater than 0 and less than or equal to 30.");
+        }
         monthlyInterestRate = annualInterestRate/MONTHS_IN_YEAR/PERCENT;
 
         System.out.println("Period (Years): ");
-        years = scanner.nextByte();
+        while (true){
+            years = scanner.nextByte();
+            if (years > 0 && years <= 30){
+                break;
+            } else
+                System.out.println("Enter a value between 1 and 30.");
+        }
         int numberOfPayments = years * MONTHS_IN_YEAR;
 
         double mortgage = principal
@@ -35,4 +52,6 @@ public class Main {
         System.out.println("Monthly payment is equal to: " + monthlyPaymentConverted);
 
     }
+
+
 }
