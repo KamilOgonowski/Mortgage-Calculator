@@ -42,6 +42,7 @@ public class Main {
                 return value;
             } else
                 System.out.println("Enter a value between "+ min + " and " + max);
+            System.out.println("testTesttest");
         }
     }
 }
