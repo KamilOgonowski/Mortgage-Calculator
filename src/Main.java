@@ -5,7 +5,10 @@ public class Main {
         float annualInterestRate = (float) Console.readNumber("Annual Interest Rate",0, 30);
         byte years = (byte) Console.readNumber("Years (Period)",0, 30);
 
-        Printsy.printMortgage(principle, annualInterestRate, years);
-        Printsy.printPaymentSchedule(principle,annualInterestRate,years);
+        MortgageCalculator mortgage = new MortgageCalculator(principle,annualInterestRate, years);
+
+
+        MortgageReport.printMortgage(principle, annualInterestRate, years);
+        MortgageReport.printPaymentSchedule(principle,annualInterestRate,years);
     }
 }
