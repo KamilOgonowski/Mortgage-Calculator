@@ -2,20 +2,13 @@ import java.text.NumberFormat;
 import java.util.Scanner;
 
 public class Main {
-
     final static byte MONTHS_IN_YEAR = 12;
     final static byte PERCENT = 100;
-
     public static void main(String[] args) {
-
         int principle = (int) readNumber("Principle",1000, 1_000_000);
         float annualInterestRate = (float) readNumber("Annual Interest Rate",0, 30);
         byte years = (byte) readNumber("Years (Period)",0, 30);
-        float monthlyInterestRate = annualInterestRate/MONTHS_IN_YEAR/PERCENT;
-        short numberOfPayments = (short) (years * MONTHS_IN_YEAR);
-
-
-        printAmounts(principle,monthlyInterestRate,numberOfPayments);
+        printAmounts(principle,annualInterestRate,years);
     }
 
     private static double calculateMortgage(
@@ -28,7 +21,6 @@ public class Main {
                 /(Math.pow(1 + monthlyInterestRate, numberOfPayments)-1);
         return mortgage;
     }
-
 
     public static double readNumber(String prompt, double min, double max){
         Scanner scanner = new Scanner(System.in);
@@ -54,11 +46,13 @@ public class Main {
                 String remainingAmount = NumberFormat.getCurrencyInstance().format(remainingLoanBalance);
         System.out.println(remainingAmount);
     }
-
     public static void printAmounts(
             int principle,
-            float monthlyInterestRate,
-            short numberOfPayments) {
+            float annualInterestRate,
+            byte years) {
+
+        float monthlyInterestRate = annualInterestRate/MONTHS_IN_YEAR/PERCENT;
+        short numberOfPayments = (short) (years * MONTHS_IN_YEAR);
 
         System.out.println("MORTGAGE");
         System.out.println("--------");
@@ -70,7 +64,6 @@ public class Main {
 
         for (short paymentsWeMade = 1; paymentsWeMade <= numberOfPayments; paymentsWeMade++){
             paymentSchedule(principle,monthlyInterestRate, numberOfPayments, paymentsWeMade);
-
         }
     }
 }
