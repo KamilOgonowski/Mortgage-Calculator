@@ -8,22 +8,23 @@ public class Main {
 
     public static void main(String[] args) {
 
-        int principal = (int) readNumber("Principal",1000, 1_000_000);
+        int principle = (int) readNumber("Principle",1000, 1_000_000);
         float annualInterestRate = (float) readNumber("Annual Interest Rate",0, 30);
         byte years = (byte) readNumber("Years (Period)",0, 30);
         float monthlyInterestRate = annualInterestRate/MONTHS_IN_YEAR/PERCENT;
-        byte numberOfPayments = (byte) (years * MONTHS_IN_YEAR);
+        short numberOfPayments = (short) (years * MONTHS_IN_YEAR);
 
-        printAmounts(principal,monthlyInterestRate,numberOfPayments);
+
+        printAmounts(principle,monthlyInterestRate,numberOfPayments);
     }
 
     private static double calculateMortgage(
-            int principal,
+            int principle,
             float monthlyInterestRate,
-            int numberOfPayments) {
+            short numberOfPayments) {
 
-        double mortgage = principal
-                *(monthlyInterestRate *(Math.pow(1 + monthlyInterestRate, numberOfPayments)))
+        double mortgage = principle*
+                (monthlyInterestRate * Math.pow(1 + monthlyInterestRate, numberOfPayments))
                 /(Math.pow(1 + monthlyInterestRate, numberOfPayments)-1);
         return mortgage;
     }
@@ -41,12 +42,12 @@ public class Main {
         }
     }
     public static void paymentSchedule(
-            int principal,
+            int principle,
             float monthlyInterestRate,
-            byte numberOfPayments,
-            byte numberOfPaymentMade) {
+            short numberOfPayments,
+            short numberOfPaymentMade) {
 
-        double remainingLoanBalance = principal
+        double remainingLoanBalance = principle
                 *((Math.pow(1 + monthlyInterestRate, numberOfPayments))
                 -(Math.pow(1 + monthlyInterestRate, numberOfPaymentMade)))
                 /(Math.pow(1 + monthlyInterestRate, numberOfPayments)-1);
@@ -55,20 +56,21 @@ public class Main {
     }
 
     public static void printAmounts(
-            int principal,
+            int principle,
             float monthlyInterestRate,
-            byte numberOfPayments) {
+            short numberOfPayments) {
 
         System.out.println("MORTGAGE");
         System.out.println("--------");
-        double mortgage = calculateMortgage(principal, monthlyInterestRate, numberOfPayments);
+        double mortgage = calculateMortgage(principle, monthlyInterestRate, numberOfPayments);
         String mortgageFormatted = NumberFormat.getCurrencyInstance().format(mortgage);
         System.out.println("Monthly Payments: " + mortgageFormatted);
         System.out.println("PAYMENT SCHEDULE");
         System.out.println("----------------");
 
-        for (byte paymentsWeMade = 1; paymentsWeMade <= numberOfPayments; paymentsWeMade++){
-            paymentSchedule(principal,monthlyInterestRate, numberOfPayments, paymentsWeMade);
+        for (short paymentsWeMade = 1; paymentsWeMade <= numberOfPayments; paymentsWeMade++){
+            paymentSchedule(principle,monthlyInterestRate, numberOfPayments, paymentsWeMade);
+
         }
     }
 }
