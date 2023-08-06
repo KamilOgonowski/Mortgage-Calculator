@@ -8,7 +8,9 @@ public class Main {
         int principle = (int) readNumber("Principle",1000, 1_000_000);
         float annualInterestRate = (float) readNumber("Annual Interest Rate",0, 30);
         byte years = (byte) readNumber("Years (Period)",0, 30);
-        printAmounts(principle,annualInterestRate,years);
+
+        printMortgage(principle, annualInterestRate, years);
+        printPaymentSchedule(principle,annualInterestRate,years);
     }
 
     private static double calculateMortgage(
@@ -22,6 +24,20 @@ public class Main {
         return mortgage;
     }
 
+    public static void calculateBalance(
+            int principle,
+            float monthlyInterestRate,
+            short numberOfPayments,
+            short numberOfPaymentMade) {
+
+        double remainingLoanBalance = principle
+                *((Math.pow(1 + monthlyInterestRate, numberOfPayments))
+                -(Math.pow(1 + monthlyInterestRate, numberOfPaymentMade)))
+                /(Math.pow(1 + monthlyInterestRate, numberOfPayments)-1);
+        String remainingAmount = NumberFormat.getCurrencyInstance().format(remainingLoanBalance);
+        System.out.println(remainingAmount);
+    }
+
     public static double readNumber(String prompt, double min, double max){
         Scanner scanner = new Scanner(System.in);
         while (true){
@@ -33,20 +49,8 @@ public class Main {
                 System.out.println("Enter a value between "+ min + " and " + max);
         }
     }
-    public static void paymentSchedule(
-            int principle,
-            float monthlyInterestRate,
-            short numberOfPayments,
-            short numberOfPaymentMade) {
 
-        double remainingLoanBalance = principle
-                *((Math.pow(1 + monthlyInterestRate, numberOfPayments))
-                -(Math.pow(1 + monthlyInterestRate, numberOfPaymentMade)))
-                /(Math.pow(1 + monthlyInterestRate, numberOfPayments)-1);
-                String remainingAmount = NumberFormat.getCurrencyInstance().format(remainingLoanBalance);
-        System.out.println(remainingAmount);
-    }
-    public static void printAmounts(
+    public static void printPaymentSchedule(
             int principle,
             float annualInterestRate,
             byte years) {
@@ -54,16 +58,23 @@ public class Main {
         float monthlyInterestRate = annualInterestRate/MONTHS_IN_YEAR/PERCENT;
         short numberOfPayments = (short) (years * MONTHS_IN_YEAR);
 
-        System.out.println("MORTGAGE");
-        System.out.println("--------");
-        double mortgage = calculateMortgage(principle, monthlyInterestRate, numberOfPayments);
-        String mortgageFormatted = NumberFormat.getCurrencyInstance().format(mortgage);
-        System.out.println("Monthly Payments: " + mortgageFormatted);
-        System.out.println("PAYMENT SCHEDULE");
+        System.out.println("\nPAYMENT SCHEDULE");
         System.out.println("----------------");
 
         for (short paymentsWeMade = 1; paymentsWeMade <= numberOfPayments; paymentsWeMade++){
-            paymentSchedule(principle,monthlyInterestRate, numberOfPayments, paymentsWeMade);
+            calculateBalance(principle,monthlyInterestRate, numberOfPayments, paymentsWeMade);
         }
+    }
+
+    private static void printMortgage(int principle, float annualInterestRate, short years) {
+
+        float monthlyInterestRate = annualInterestRate/MONTHS_IN_YEAR/PERCENT;
+        short numberOfPayments = (short) (years * MONTHS_IN_YEAR);
+
+        double mortgage = calculateMortgage(principle, monthlyInterestRate, numberOfPayments);
+        String mortgageFormatted = NumberFormat.getCurrencyInstance().format(mortgage);
+        System.out.println("MORTGAGE");
+        System.out.println("--------");
+        System.out.println("Monthly Payments: " + mortgageFormatted);
     }
 }
